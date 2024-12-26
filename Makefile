@@ -21,6 +21,7 @@ all:
 help:
 	@echo -e "$(OK_COLOR)==== All commands of ${name} configuration ====$(NO_COLOR)"
 	@echo -e "$(WARN_COLOR)- make				: Launch configuration"
+	@echo -e "$(WARN_COLOR)- make back			:  "
 	@echo -e "$(WARN_COLOR)- make build			: Building configuration"
 	@echo -e "$(WARN_COLOR)- make down			: Stopping configuration"
 	@echo -e "$(WARN_COLOR)- make push			: Push changes to the github"
@@ -30,6 +31,9 @@ help:
 	@echo -e "$(WARN_COLOR)- make reps			: Rebuild postgres configuration"
 	@echo -e "$(WARN_COLOR)- make ps			: View configuration"
 	@echo -e "$(WARN_COLOR)- make clean			: Cleaning configuration$(NO_COLOR)"
+
+back:
+	@bash scripts/back.sh
 
 build:
 	@printf "$(YELLOW)==== Building configuration ${name}... ====$(NO_COLOR)\n"
@@ -45,6 +49,9 @@ env:
 		rm .env; \
 	fi; \
 	cp .env.example .env
+
+front:
+	@bash scripts/front.sh
 
 git:
 	@bash scripts/gituser.sh
@@ -84,4 +91,4 @@ fclean:
 	# @docker network prune --force
 	# @docker volume prune --force
 
-.PHONY	: all help build down re refl repa reps ps clean fclean
+.PHONY	: all back front help build down re refl repa reps ps clean fclean

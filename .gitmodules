@@ -1,0 +1,6 @@
+[submodule "front"]
+	path = front
+	url = github-repo:/codesshaman/posts_generator_front.git
+[submodule "back"]
+	path = back
+	url = github-repo:/codesshaman/posts_generator_back.git
