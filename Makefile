@@ -21,9 +21,12 @@ all:
 help:
 	@echo -e "$(OK_COLOR)==== All commands of ${name} configuration ====$(NO_COLOR)"
 	@echo -e "$(WARN_COLOR)- make				: Launch configuration"
-	@echo -e "$(WARN_COLOR)- make back			:  "
+	@echo -e "$(WARN_COLOR)- make back			: Git pull backend changes"
 	@echo -e "$(WARN_COLOR)- make build			: Building configuration"
 	@echo -e "$(WARN_COLOR)- make down			: Stopping configuration"
+	@echo -e "$(WARN_COLOR)- make front			: Git pull frontend changes"
+	@echo -e "$(WARN_COLOR)- make full			: Launch full configuration"
+	@echo -e "$(WARN_COLOR)- make fullbuild		: Building full configuration"
 	@echo -e "$(WARN_COLOR)- make push			: Push changes to the github"
 	@echo -e "$(WARN_COLOR)- make re			: Rebuild configuration"
 	@echo -e "$(WARN_COLOR)- make refl			: Rebuild flask configuration"
@@ -37,7 +40,7 @@ back:
 
 build:
 	@printf "$(YELLOW)==== Building configuration ${name}... ====$(NO_COLOR)\n"
-	@docker-compose -f ./docker-compose.yml up -d --build
+	@docker-compose -f ./docker-compose.yml up -d --build back front postgres
 
 down:
 	@printf "$(ERROR_COLOR)==== Stopping configuration ${name}... ====$(NO_COLOR)\n"
@@ -56,6 +59,10 @@ front:
 full:
 	@printf "Launch full configuration ${name}...\n"
 	@docker-compose -f ./docker-compose.yml up -d
+
+fullbuild:
+	@printf "$(YELLOW)==== Building full configuration ${name}... ====$(NO_COLOR)\n"
+	@docker-compose -f ./docker-compose.yml up -d --build
 
 git:
 	@bash scripts/gituser.sh

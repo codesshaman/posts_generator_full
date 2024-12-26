@@ -34,9 +34,9 @@ services:
     depends_on:
       - postgres
     ports:
-      - "$BACKJ_PORT:8000"
+      - "$BACKJ_PORT:8080"
     volumes:
-      - ./app/project:/app
+      - ./back:/app
     networks:
       network:
         ipv4_address: $BACKJ_HOST
@@ -62,7 +62,7 @@ services:
     ports:
       - "$FRONT_PORT:8000"
     volumes:
-      - ./app/project:/app
+      - ./front:/app
     networks:
       network:
         ipv4_address: $FRONT_HOST
@@ -89,7 +89,7 @@ services:
     networks:
       network:
         ipv4_address: $PSTGS_HOST
- 
+
   pgadmin:
     image: $PGADM_IMG
     container_name: $PGADM_NAME
