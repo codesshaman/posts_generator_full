@@ -25,11 +25,11 @@ services:
       context: .
       dockerfile: back.Dockerfile
     container_name: $BACKJ_NAME
-    # healthcheck:
-    #   test: ["CMD-SHELL", "curl --fail http://localhost:$BACKJ_PORT || exit 1"]
-    #   interval: 5s
-    #   timeout: 5s
-    #   retries: 3
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:$BACKJ_PORT || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
     restart: unless-stopped
     depends_on:
       - postgres
@@ -51,11 +51,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 3
-    healthcheck:
-      test: ["CMD-SHELL", "curl --fail http://localhost:8000 || exit 1"]
-      interval: 5s
-      timeout: 5s
-      retries: 3
     restart: unless-stopped
     depends_on:
       - back
@@ -68,7 +63,7 @@ services:
         ipv4_address: $FRONT_HOST
 
   postgres:
-    image: $PSTGS_IMG
+    image: $PSTGR_IMG
     environment:
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       # If your wanna nopass authentication, 
@@ -84,11 +79,11 @@ services:
       - ./dump:/docker-entrypoint-initdb.d:z
       - ./postgres-data:/var/lib/postgresql/data:z
     ports:
-      - "$PSTGS_PORT:5432"
-    container_name: $PSTGS_NAME
+      - "$PSTGR_PORT:5432"
+    container_name: $PSTGR_NAME
     networks:
       network:
-        ipv4_address: $PSTGS_HOST
+        ipv4_address: $PSTGR_HOST
 
   pgadmin:
     image: $PGADM_IMG

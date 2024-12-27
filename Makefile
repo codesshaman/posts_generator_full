@@ -1,4 +1,4 @@
-name = Django
+name = Posts Generator
 
 NO_COLOR=\033[0m	# Color Reset
 COLOR_OFF='\e[0m'       # Color Off
@@ -22,13 +22,19 @@ help:
 	@echo -e "$(OK_COLOR)==== All commands of ${name} configuration ====$(NO_COLOR)"
 	@echo -e "$(WARN_COLOR)- make				: Launch configuration"
 	@echo -e "$(WARN_COLOR)- make back			: Git pull backend changes"
+	@echo -e "$(WARN_COLOR)- make bd			: Build database only"
 	@echo -e "$(WARN_COLOR)- make build			: Building configuration"
+	@echo -e "$(WARN_COLOR)- make conb			: Connect to the backend"
+	@echo -e "$(WARN_COLOR)- make condb			: Connect to the database"
+	@echo -e "$(WARN_COLOR)- make conf			: Connect to the frontend"
+	@echo -e "$(WARN_COLOR)- make dd			: Down database"
 	@echo -e "$(WARN_COLOR)- make down			: Stopping configuration"
 	@echo -e "$(WARN_COLOR)- make front			: Git pull frontend changes"
 	@echo -e "$(WARN_COLOR)- make full			: Launch full configuration"
 	@echo -e "$(WARN_COLOR)- make fullbuild		: Building full configuration"
 	@echo -e "$(WARN_COLOR)- make push			: Push changes to the github"
 	@echo -e "$(WARN_COLOR)- make re			: Rebuild configuration"
+	@echo -e "$(WARN_COLOR)- make red			: Rebuild database"
 	@echo -e "$(WARN_COLOR)- make refl			: Rebuild flask configuration"
 	@echo -e "$(WARN_COLOR)- make repa			: Rebuild pgadmin configuration"
 	@echo -e "$(WARN_COLOR)- make reps			: Rebuild postgres configuration"
@@ -41,6 +47,30 @@ back:
 build:
 	@printf "$(YELLOW)==== Building configuration ${name}... ====$(NO_COLOR)\n"
 	@docker-compose -f ./docker-compose.yml up -d --build back front postgres
+
+bd:
+	@printf "$(YELLOW)==== Building ${name} database... ====$(NO_COLOR)\n"
+	@docker-compose -f ./docker-compose.yml up -d --build postgres
+
+conb:
+	@printf "$(OK_COLOR)==== Connect to ${name} backend... ====$(NO_COLOR)\n"
+	@docker exec -it --user postgres back sh
+
+condb:
+	@printf "$(OK_COLOR)==== Connect to ${name} database... ====$(NO_COLOR)\n"
+	@docker exec -it --user postgres postgres psql
+
+conf:
+	@printf "$(OK_COLOR)==== Connect to ${name} backend... ====$(NO_COLOR)\n"
+	@docker exec -it --user postgres front sh
+
+dd:
+	@printf "$(ERROR_COLOR)==== Stopping database ${name}... ====$(NO_COLOR)\n"
+	@docker-compose -f ./docker-compose.yml down
+
+dd:
+	@printf "$(ERROR_COLOR)==== Stopping database ${name}... ====$(NO_COLOR)\n"
+	@docker-compose -f ./docker-compose.yml down postgres
 
 down:
 	@printf "$(ERROR_COLOR)==== Stopping configuration ${name}... ====$(NO_COLOR)\n"
@@ -74,6 +104,10 @@ re:
 	@printf "$(OK_COLOR)==== Rebuild configuration ${name}... ====$(NO_COLOR)\n"
 	@docker-compose -f ./docker-compose.yml up -d --no-deps --build
 
+re:
+	@printf "$(OK_COLOR)==== Rebuild ${name} database... ====$(NO_COLOR)\n"
+	@docker-compose -f ./docker-compose.yml up -d --no-deps --build postgres
+
 refl:
 	@printf "$(OK_COLOR)==== Rebuild postgres... ====$(NO_COLOR)\n"
 	@docker-compose -f ./docker-compose.yml up -d --no-deps --build flask
@@ -102,4 +136,4 @@ fclean:
 	# @docker network prune --force
 	# @docker volume prune --force
 
-.PHONY	: all back front help build down re refl repa reps ps clean fclean
+.PHONY	: all back bd front help build dd down re refl repa reps ps clean fclean
