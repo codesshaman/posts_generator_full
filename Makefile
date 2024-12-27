@@ -104,7 +104,7 @@ re:
 	@printf "$(OK_COLOR)==== Rebuild configuration ${name}... ====$(NO_COLOR)\n"
 	@docker-compose -f ./docker-compose.yml up -d --no-deps --build
 
-re:
+red:
 	@printf "$(OK_COLOR)==== Rebuild ${name} database... ====$(NO_COLOR)\n"
 	@docker-compose -f ./docker-compose.yml up -d --no-deps --build postgres
 
@@ -136,4 +136,4 @@ fclean:
 	# @docker network prune --force
 	# @docker volume prune --force
 
-.PHONY	: all back bd front help build dd down re refl repa reps ps clean fclean
+.PHONY	: all back bd front help build dd down re red refl repa reps ps clean fclean
