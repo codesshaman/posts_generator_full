@@ -1,4 +1,4 @@
-name = Posts Generator
+name = Posts Generator Full
 
 NO_COLOR=\033[0m	# Color Reset
 COLOR_OFF='\e[0m'       # Color Off
@@ -79,9 +79,11 @@ down:
 env:
 	@printf "$(ERROR_COLOR)==== Create environment file for ${name}... ====$(NO_COLOR)\n"
 	@if [ -f .env ]; then \
-		rm .env; \
-	fi; \
-	cp .env.example .env
+		echo "$(ERROR_COLOR).env file already exists!$(NO_COLOR)"; \
+	else \
+		cp .env.example .env; \
+		echo "$(GREEN).env file successfully created!$(NO_COLOR)"; \
+	fi
 
 front:
 	@bash scripts/front.sh
